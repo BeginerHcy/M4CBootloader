@@ -5,7 +5,7 @@
 //cyc_task_fun cycTask[]={cyc2ms,cyc4ms,cyc20ms,cyc100ms,cyc500ms,cycLongTsk};
 ///////////////////////////////////////////////////////////////
 static bool fistBoot = 1;
-
+static uint32_t CNTFlash=0;
 float timeBoot = 0;
 dwnCtrl_type dwnCtrl={0};
 
@@ -67,14 +67,28 @@ const uint8_t s_CRCLo[] = {
 	0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42,
 	0x43, 0x83, 0x41, 0x81, 0x80, 0x40
 };
-
+void cyc100ms(){
+	
+	if(CNTFlash==0||CNTFlash==2){
+		gMachineIO.LED = 1;
+		CNTFlash++;
+	}
+	else if(CNTFlash==1||CNTFlash==3){
+		gMachineIO.LED = 0;
+		CNTFlash++;
+	}	
+	else if (CNTFlash>10){
+		CNTFlash = 0;
+	}
+	else{
+		CNTFlash++;
+	}	
+}
 void cyc20ms(){
-
+	;
 }
 void cyc500ms(){
-
-	gMachineIO.LED = !gMachineIO.LED;
-	
+	;
 }
 
 void NullApp(){
@@ -83,13 +97,13 @@ void NullApp(){
 	
 	if(fistBoot==1){
 		delay_ms(1000);
-		gMachineIO.Uart6Data.sBuffer[0] = 0xDB;
-		gMachineIO.Uart6Data.sBuffer[1] = 0x01;
-		crc=CRC16_Modbus(&gMachineIO.Uart6Data.sBuffer[0],2);
-		gMachineIO.Uart6Data.sBuffer[2] = crc>>8;
-		gMachineIO.Uart6Data.sBuffer[3] = crc>>0 & 0xFF; 
-		gMachineIO.Uart6Data.sLen = 4;	
-		SendUrtBuf(&gMachineIO.Uart6Data,Uartx6);
+		gMachineIO.Uart1Data.sBuffer[0] = 0xDB;
+		gMachineIO.Uart1Data.sBuffer[1] = 0x01;
+		crc=CRC16_Modbus(&gMachineIO.Uart1Data.sBuffer[0],2);
+		gMachineIO.Uart1Data.sBuffer[2] = crc>>8;
+		gMachineIO.Uart1Data.sBuffer[3] = crc>>0 & 0xFF; 
+		gMachineIO.Uart1Data.sLen = 4;	
+		SendUrtBuf(&gMachineIO.Uart1Data,Uartx1);
 		fistBoot = 0;
 		dwnCtrl.iArry = 0;
 		dwnCtrl.demandIndex = 0;
@@ -100,23 +114,23 @@ void NullApp(){
 	
 		case 0:
 			
-			if(capBin(&gMachineIO.Uart6Data)==1){
+			if(capBin(&gMachineIO.Uart1Data)==1){
 				
 				delay_ms(30);
 				
 				iap_write_appbin(FLASH_APP1_ADDR+dwnCtrl.index,(u8 *)dwnCtrl.bufAddr,dwnCtrl.numSend);
 
-				gMachineIO.Uart6Data.sBuffer[0] = 0xBA;
-				gMachineIO.Uart6Data.sBuffer[1] = 0x01;
-				gMachineIO.Uart6Data.sBuffer[2] = dwnCtrl.demandIndex >> 16;
-				gMachineIO.Uart6Data.sBuffer[3] = dwnCtrl.demandIndex >> 8;
-				gMachineIO.Uart6Data.sBuffer[4] = dwnCtrl.demandIndex >> 0 & 0xFF;
-				crc=CRC16_Modbus(&gMachineIO.Uart6Data.sBuffer[0],5);
-				gMachineIO.Uart6Data.sBuffer[5] = crc>>8;
-				gMachineIO.Uart6Data.sBuffer[6] = crc>>0 & 0xFF; 
-				gMachineIO.Uart6Data.sLen = 7;
+				gMachineIO.Uart1Data.sBuffer[0] = 0xBA;
+				gMachineIO.Uart1Data.sBuffer[1] = 0x01;
+				gMachineIO.Uart1Data.sBuffer[2] = dwnCtrl.demandIndex >> 16;
+				gMachineIO.Uart1Data.sBuffer[3] = dwnCtrl.demandIndex >> 8;
+				gMachineIO.Uart1Data.sBuffer[4] = dwnCtrl.demandIndex >> 0 & 0xFF;
+				crc=CRC16_Modbus(&gMachineIO.Uart1Data.sBuffer[0],5);
+				gMachineIO.Uart1Data.sBuffer[5] = crc>>8;
+				gMachineIO.Uart1Data.sBuffer[6] = crc>>0 & 0xFF; 
+				gMachineIO.Uart1Data.sLen = 7;
 					
-				SendUrtBuf(&gMachineIO.Uart6Data,Uartx6);
+				SendUrtBuf(&gMachineIO.Uart1Data,Uartx1);
 				
 				dwnCtrl.indexArry[dwnCtrl.iArry]=dwnCtrl.demandIndex;
 				dwnCtrl.iArry++;
@@ -149,32 +163,32 @@ void NullApp(){
 	
 	}
 	
-	if(capStartDwn(&gMachineIO.Uart6Data)==1){	
+	if(capStartDwn(&gMachineIO.Uart1Data)==1){	
 		delay_ms(10);
 		
-		gMachineIO.Uart6Data.sBuffer[0] = 0xBB;
-		gMachineIO.Uart6Data.sBuffer[1] = 0x01;
-		crc=CRC16_Modbus(&gMachineIO.Uart6Data.sBuffer[0],2);
-		gMachineIO.Uart6Data.sBuffer[2] = crc>>8;
-		gMachineIO.Uart6Data.sBuffer[3] = crc>>0 & 0xFF; 
-		gMachineIO.Uart6Data.sLen = 4;	
-		SendUrtBuf(&gMachineIO.Uart6Data,Uartx6);
+		gMachineIO.Uart1Data.sBuffer[0] = 0xBB;
+		gMachineIO.Uart1Data.sBuffer[1] = 0x01;
+		crc=CRC16_Modbus(&gMachineIO.Uart1Data.sBuffer[0],2);
+		gMachineIO.Uart1Data.sBuffer[2] = crc>>8;
+		gMachineIO.Uart1Data.sBuffer[3] = crc>>0 & 0xFF; 
+		gMachineIO.Uart1Data.sLen = 4;	
+		SendUrtBuf(&gMachineIO.Uart1Data,Uartx1);
 		
 		delay_ms(100);
 		
 		NVIC_SystemReset();
 	}
 	
-	if(capEndDwn(&gMachineIO.Uart6Data)==1){	
+	if(capEndDwn(&gMachineIO.Uart1Data)==1){	
 		delay_ms(10);
 		
-		gMachineIO.Uart6Data.sBuffer[0] = 0xBC;
-		gMachineIO.Uart6Data.sBuffer[1] = 0x01;
-		crc=CRC16_Modbus(&gMachineIO.Uart6Data.sBuffer[0],2);
-		gMachineIO.Uart6Data.sBuffer[2] = crc>>8;
-		gMachineIO.Uart6Data.sBuffer[3] = crc>>0 & 0xFF; 
-		gMachineIO.Uart6Data.sLen = 4;	
-		SendUrtBuf(&gMachineIO.Uart6Data,Uartx6);
+		gMachineIO.Uart1Data.sBuffer[0] = 0xBC;
+		gMachineIO.Uart1Data.sBuffer[1] = 0x01;
+		crc=CRC16_Modbus(&gMachineIO.Uart1Data.sBuffer[0],2);
+		gMachineIO.Uart1Data.sBuffer[2] = crc>>8;
+		gMachineIO.Uart1Data.sBuffer[3] = crc>>0 & 0xFF; 
+		gMachineIO.Uart1Data.sLen = 4;	
+		SendUrtBuf(&gMachineIO.Uart1Data,Uartx1);
 		
 		delay_ms(100);		
 		iap_load_app(FLASH_APP1_ADDR);//Ö´ÐÐFLASH APP´úÂë

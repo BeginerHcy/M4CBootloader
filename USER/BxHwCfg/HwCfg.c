@@ -17,6 +17,8 @@ void TIM2_PWM_Init(u32 arr,u32 psc);
 ////////////////////
 #define Uart6RS485RE SetDO(RS485DE,0)
 #define Uart6RS485SE SetDO(RS485DE,1)
+#define Uart6RS485RE2 SetDO(RS485DE2,0)
+#define Uart6RS485SE2 SetDO(RS485DE2,1)
 void SystemConfig()
 {
 	delay_init(168);
@@ -27,10 +29,13 @@ void HwCfgInit()
 	/////////////initial output///////////
 	CfgPINOut(DOLED);	
 	CfgPINOut(RS485DE);	
+	CfgPINOut(RS485DE2);	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	/////////////Obtain the buffParameter/////////
-	CfgUartx(Uartx6,3,Uart6TX,Uart6RX);
-	Uart6RS485RE;//
+	//CfgUartx(Uartx6,3,Uart6TX,Uart6RX);
+	CfgUartx(Uartx1,3,Uart1TX,Uart1RX);
+	//Uart6RS485RE;//
+	Uart6RS485RE2;
 	////////////
 	TimCfg(1000,TIMx3);
 	////////////
@@ -269,10 +274,13 @@ enum IRQn MapIRQn(uint32_t BASEType)
 	}
 	return TIM3_IRQn;
 }
-
+void USART1_IRQHandler(void)
+{
+	FillUrtBuf(&(gMachineIO.Uart1Data),Uartx1);//////485-2//////
+}
 void USART6_IRQHandler(void)
 {
-	FillUrtBuf(&(gMachineIO.Uart6Data),Uartx6);//////485//////
+	FillUrtBuf(&(gMachineIO.Uart6Data),Uartx6);//////485-1//////
 }
 void FillUrtBuf(UrtBuf_type * pBoxIO,uint32_t USARTx)
 {
@@ -315,6 +323,9 @@ void SendUrtBuf(UrtBuf_type * pBoxIO,uint32_t USARTx)
 		  case Uartx6:
 				Uart6RS485SE;
 				break;
+			case Uartx1:
+				Uart6RS485SE2;
+				break;
 			default:
 				;
 				break;
@@ -329,6 +340,9 @@ void SendUrtBuf(UrtBuf_type * pBoxIO,uint32_t USARTx)
 		{
 		  case Uartx6:
 				Uart6RS485RE;
+				break;
+			case Uartx1:
+				Uart6RS485RE2;
 				break;
 			default:
 				;
