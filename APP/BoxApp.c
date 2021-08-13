@@ -95,7 +95,12 @@ void NullApp(){
 	
 	uint16_t crc;
 	
+	
+	
+	
+	
 	if(fistBoot==1){
+		DemoFatFS();
 		delay_ms(1000);
 		gMachineIO.Uart1Data.sBuffer[0] = 0xDB;
 		gMachineIO.Uart1Data.sBuffer[1] = 0x01;
@@ -110,6 +115,8 @@ void NullApp(){
 		memset(&dwnCtrl,0,sizeof(dwnCtrl));
 	}
 	
+	DemoFatProcess();
+
 	switch (dwnCtrl.status){
 	
 		case 0:

@@ -2,6 +2,7 @@
 #include "stm32f4xx_gpio.h"
 #include "string.h"
 #include "stm32f4xx_spi.h"
+#include "demo_fatfs.h"
 /* stdbool.h standard header */
 #ifndef _STDBOOL
 #define _STDBOOL

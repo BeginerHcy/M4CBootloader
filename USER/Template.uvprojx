@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,__CC_ARM,__TARGET_FPU_VFP,__FPU_PRESENT,ARM_MATH_CM4,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
+              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,__CC_ARM,__TARGET_FPU_VFP,__FPU_PRESENT,ARM_MATH_CM4,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,USE_USB_OTG_HS,USE_EMBEDDED_PHY</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;.\BxHwCfg;.\CAN;.\STMFLASH;..\APP;.\DC7760;.\ADC;.\IAP</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\FWLIB\inc;.\BxHwCfg;.\CAN;.\STMFLASH;..\APP;.\IAP;.\usbh_mass_storage;..\Library\STM32_USB_OTG_Driver\inc;..\Library\STM32_USB_HOST_Library\Core\inc;..\Library\STM32_USB_HOST_Library\Class\MSC\inc;.\FatFS\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -395,6 +395,11 @@
               <FileName>stmflash.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\STMFLASH\stmflash.c</FilePath>
+            </File>
+            <File>
+              <FileName>demo_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\demo_fatfs.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -640,6 +645,101 @@
               <FileName>iap.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\IAP\iap.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>FatFS</GroupName>
+          <Files>
+            <File>
+              <FileName>cc936.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FatFS\src\option\cc936.c</FilePath>
+            </File>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FatFS\src\diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FatFS\src\ff.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USB Host Driver</GroupName>
+          <Files>
+            <File>
+              <FileName>usbh_msc_bot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Class\MSC\src\usbh_msc_bot.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_msc_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Class\MSC\src\usbh_msc_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_msc_scsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Class\MSC\src\usbh_msc_scsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Core\src\usbh_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_hcs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Core\src\usbh_hcs.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_ioreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Core\src\usbh_ioreq.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_stdreq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_HOST_Library\Core\src\usbh_stdreq.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_hcd_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_OTG_Driver\src\usb_hcd_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_OTG_Driver\src\usb_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usb_hcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Library\STM32_USB_OTG_Driver\src\usb_hcd.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>USBH Masss Storage</GroupName>
+          <Files>
+            <File>
+              <FileName>usb_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usbh_mass_storage\usb_bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usbh_mass_storage\usbh_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbh_usr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usbh_mass_storage\usbh_usr.c</FilePath>
             </File>
           </Files>
         </Group>
